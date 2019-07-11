@@ -25,7 +25,7 @@ After properly authenticating, you should notice a file named `token.pickle` app
 The following command creates the .zip file and adds the package dependencies to it
 
 ```
-cd packages
+cd package
 zip -r9 ../overdue.zip .
 ```
 
