@@ -6,8 +6,34 @@ Perhaps one day, it can be expanded to provide more helpful reminders, or perhap
 
 ## Making Code Changes
 
-The following command zips this project into a file that can be uploaded to a Lambda Function.
+The following steps must be followed in order to create a deployable .zip file for Overdue.
+
+### Generate token.pickle
+
+First, create a file named `credentials.json` in your package root directory and add your Google API credentials to it.
+
+Run the following command and copy/paste the URL provided. 
 
 ```
-zip ../overdue.zip *
+python3 generate_token.py
 ```
+
+After properly authenticating, you should notice a file named `token.pickle` appear in the package root directory.
+
+### Generate .zip file
+
+The following command creates the .zip file and adds the package dependencies to it
+
+```
+cd packages
+zip -r9 ../overdue.zip .
+```
+
+Next, run the following command to add the handler function code and your token to the .zip archive.
+
+```
+cd ../
+zip -g overdue.zip index.py token.pickle
+```
+
+Done! Now you should have a complete `overdue.zip` file that you can upload to your Lambda Function.
