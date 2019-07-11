@@ -33,7 +33,7 @@ Next, run the following command to add the handler function code and your token 
 
 ```
 cd ../
-zip -g overdue.zip index.py
+zip -g overdue.zip lambda_handler.py
 ```
 
 Done! Now you should have a complete `overdue.zip` file that you can upload to your Lambda Function.
