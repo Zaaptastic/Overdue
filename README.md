@@ -37,3 +37,12 @@ zip -g overdue.zip index.py token.pickle
 ```
 
 Done! Now you should have a complete `overdue.zip` file that you can upload to your Lambda Function.
+
+## Configuring Lambda
+
+After uploading the .zip archive to a created Lambda Function, there are only a few additional steps needed to get your own personal Function up and running.
+
+1. Create an SNS Topic for this Function to publish to (and of course, subscribe to it)
+1. Add the following Environment Variable to your Lambda Function: `SNS_ARN: <ARN of SNS topic from above step>`
+1. Add the following IAM Permissions (via a new or existing IAM Role) to your Lambda Function: `AWSLambdaBasicExecutionRole` and `AWSLambdaSNSPublishPolicyExecutionRole`
+1. Add a Cloudwatch Events trigger to your Lambda Function, and set it to occur at the desired interval (recommendation: `rate(1 day)`)
