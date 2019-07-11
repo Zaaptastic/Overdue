@@ -2,12 +2,22 @@ import boto3
 import os
 import pickle
 import datetime as dt
+from io import BytesIO
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 sns = boto3.client('sns')
+s3 = boto3.resource('s3')
+
+# Grab credentials from S3 drop point and construct service client
+creds = None
+with BytesIO() as data:
+    s3.Bucket(os.environ['S3_BUCKET_NAME']).download_fileobj(os.environ['S3_FILE_NAME'], data)
+    data.seek(0)    # move back to the beginning after writing
+    creds = pickle.load(data)
+tasks_service_client = build('tasks', 'v1', credentials=creds)
 
 def publish_message_to_sns(task_title):
 	message = "You have one overdue task: " + task_title
@@ -28,17 +38,8 @@ def is_time_overdue(time_string):
 	return False
 	
 def handler(event, context):
-	creds = None
-	# The file token.pickle stores the user's access and refresh tokens, and is
-	# created automatically when the authorization flow completes for the first
-	# time.
-	with open('token.pickle', 'rb') as token:
-		creds = pickle.load(token)
-
-	service = build('tasks', 'v1', credentials=creds)
-
 	# Call the Tasks API
-	results = service.tasklists().list(maxResults=10).execute()
+	results = tasks_service_client.tasklists().list(maxResults=10).execute()
 	items = results.get('items', [])
 
 	if not items:
@@ -48,7 +49,7 @@ def handler(event, context):
 		for item in items:
 			print(u'{0} ({1})'.format(item['title'], item['id']))
 			
-			results = service.tasks().list(tasklist=item['id']).execute()
+			results = tasks_service_client.tasks().list(tasklist=item['id']).execute()
 			tasks_list = results.get('items', [])
 			for task_item in tasks_list:
 				print("\tProcessing task: " + task_item['title'])

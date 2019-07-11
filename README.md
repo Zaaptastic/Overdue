@@ -18,7 +18,7 @@ Run the following command and copy/paste the URL provided.
 python3 generate_token.py
 ```
 
-After properly authenticating, you should notice a file named `token.pickle` appear in the package root directory.
+After properly authenticating, you should notice a file named `token.pickle` appear in the package root directory. Upload this token to a dedicated, private bucket on S3.
 
 ### Generate .zip file
 
@@ -33,7 +33,7 @@ Next, run the following command to add the handler function code and your token 
 
 ```
 cd ../
-zip -g overdue.zip index.py token.pickle
+zip -g overdue.zip index.py
 ```
 
 Done! Now you should have a complete `overdue.zip` file that you can upload to your Lambda Function.
@@ -43,6 +43,9 @@ Done! Now you should have a complete `overdue.zip` file that you can upload to y
 After uploading the .zip archive to a created Lambda Function, there are only a few additional steps needed to get your own personal Function up and running.
 
 1. Create an SNS Topic for this Function to publish to (and of course, subscribe to it)
-1. Add the following Environment Variable to your Lambda Function: `SNS_ARN: <ARN of SNS topic from above step>`
-1. Add the following IAM Permissions (via a new or existing IAM Role) to your Lambda Function: `AWSLambdaBasicExecutionRole` and `AWSLambdaSNSPublishPolicyExecutionRole`
+1. Add the following Environment Variables to your Lambda Function:
+  1. Key: `SNS_ARN`, Value: `<ARN of SNS topic from above step>`
+  1. Key: `S3_BUCKET_NAME`, Value: `<Name of S3 Bucket containing authentication token>`
+  1. Key: `S3_FILE_NAME`, Value: `<Name of authentication token file>`
+1. Add the following IAM Permissions (via a new or existing IAM Role) to your Lambda Function: `AWSLambdaBasicExecutionRole`, `AmazonS3ReadOnlyAccess` and `AWSLambdaSNSPublishPolicyExecutionRole`
 1. Add a Cloudwatch Events trigger to your Lambda Function, and set it to occur at the desired interval (recommendation: `rate(1 day)`)
