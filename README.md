@@ -8,6 +8,14 @@ Perhaps one day, it can be expanded to provide more helpful reminders, or perhap
 
 The following steps must be followed in order to create a deployable .zip file for Overdue.
 
+### Running Unit Tests
+
+To execute the unit testing suite, simply run the command:
+
+```
+python3 lambda_tests.py
+```
+
 ### Generate token.pickle
 
 First, create a file named `credentials.json` in your package root directory and add your Google API credentials to it.
