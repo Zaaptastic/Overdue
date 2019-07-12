@@ -8,6 +8,14 @@ Perhaps one day, it can be expanded to provide more helpful reminders, or perhap
 
 The following steps must be followed in order to create a deployable .zip file for Overdue.
 
+### Install Dependencies
+
+The following dependencies should be installed with the following command:
+
+```
+pip3 install pytz google-api-python-client google-auth-httplib2 google-auth-oauthlib
+```
+
 ### Generate Authentication Token
 
 This requires having a Google API Project to enable API access to the Tasks API.
