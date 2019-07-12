@@ -13,11 +13,12 @@ s3 = boto3.resource('s3')
 
 # Grab credentials from S3 drop point and construct service client
 creds = None
-with BytesIO() as data:
-    s3.Bucket(os.environ['S3_BUCKET_NAME']).download_fileobj(os.environ['S3_FILE_NAME'], data)
-    data.seek(0)    # move back to the beginning after writing
-    creds = pickle.load(data)
-tasks_service_client = build('tasks', 'v1', credentials=creds)
+if 'TEST_DOMAIN' not in os.environ:
+	with BytesIO() as data:
+	    s3.Bucket(os.environ['S3_BUCKET_NAME']).download_fileobj(os.environ['S3_FILE_NAME'], data)
+	    data.seek(0)    # move back to the beginning after writing
+	    creds = pickle.load(data)
+	tasks_service_client = build('tasks', 'v1', credentials=creds)
 
 def publish_message_to_sns(task_title):
 	message = "You have one overdue task: " + task_title
@@ -31,10 +32,10 @@ def publish_message_to_sns(task_title):
 	
 def is_time_overdue(time_string):
 	due_time = dt.datetime.strptime(time_string, '%Y-%m-%d')
-	# This is always at UTC, so if the Cloudwatch Event triggers after 8 PM EST, this is ok.
-	# If not, uncomment the subtraction.
+	# This is always at UTC, so if the Cloudwatch Event triggers after 8 PM EST, this is ok,
+	# since it essentially "adds a day". If not, adjust accordingly.
 	# TODO: Get the current timezone as well.
-	overdue_time = dt.datetime.now() # - dt.timedelta(days=1)
+	overdue_time = dt.datetime.now() # + dt.timedelta(days=1)
 	print("\t\tProcessing due time: " + str(due_time), ". Will consider overdue if after: " + str(overdue_time))
 	if overdue_time >= due_time:
 		return True
