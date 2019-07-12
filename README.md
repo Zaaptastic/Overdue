@@ -10,7 +10,9 @@ The following steps must be followed in order to create a deployable .zip file f
 
 ### Generate Authentication Token
 
-First, create a file named `credentials.json` in your package root directory and add your Google API credentials to it.
+This requires having a Google API Project to enable API access to the Tasks API.
+
+First, create a file named `credentials.json` in your package root directory and add your Google API credentials to it. These credentials can be created and managed in the [Google API Console](https://console.developers.google.com/apis/credentials).
 
 Run the following command and copy/paste the URL provided. 
 
