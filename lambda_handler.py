@@ -13,7 +13,7 @@ sns = boto3.client('sns')
 s3 = boto3.resource('s3')
 default_timezone = timezone('US/Eastern')
 
-# Grab credentials from S3 drop point and construct service client
+# Grab credentials from S3 drop point and construct service client.
 creds = None
 if 'TEST_DOMAIN' not in os.environ:
 	with BytesIO() as data:
@@ -45,6 +45,7 @@ def is_time_overdue(time_string):
 	return False
 	
 def handler(event, context):
+	print("Beginning Lambda Handler Execution.")
 	# Call the Tasks API
 	results = tasks_service_client.tasklists().list(maxResults=10).execute()
 	items = results.get('items', [])

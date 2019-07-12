@@ -8,15 +8,7 @@ Perhaps one day, it can be expanded to provide more helpful reminders, or perhap
 
 The following steps must be followed in order to create a deployable .zip file for Overdue.
 
-### Running Unit Tests
-
-To execute the unit testing suite, simply run the command:
-
-```
-python3 lambda_tests.py
-```
-
-### Generate token.pickle
+### Generate Authentication Token
 
 First, create a file named `credentials.json` in your package root directory and add your Google API credentials to it.
 
@@ -27,6 +19,21 @@ python3 generate_token.py
 ```
 
 After properly authenticating, you should notice a file named `token.pickle` appear in the package root directory. Upload this token to a dedicated, private bucket on S3.
+
+### Running Unit Tests
+
+To execute the unit testing suite, simply run the command:
+
+```
+python3 lambda_tests.py
+```
+
+### Running Deployment Script
+Assuming you have your AWS CLI correctly configured, you can take advantage of a handy script provided in the root package directory to easily test, build, and deploy your Lambda Function. Simply run the command:
+
+```
+python3 deploy_lambda_function.py
+```
 
 ### Generate .zip file
 
