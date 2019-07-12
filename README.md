@@ -20,19 +20,21 @@ python3 generate_token.py
 
 After properly authenticating, you should notice a file named `token.pickle` appear in the package root directory. Upload this token to a dedicated, private bucket on S3.
 
+### Running Deployment Script
+Assuming you have your AWS CLI correctly configured, you can take advantage of a handy script provided in the root package directory to easily test, build, and deploy your Lambda Function. Simply run the command:
+
+```
+python3 deploy_lambda_function.py
+```
+
+If this works for you, then great! You don't need to follow any of the other steps in this section for deploying your code changes.
+
 ### Running Unit Tests
 
 To execute the unit testing suite, simply run the command:
 
 ```
 python3 lambda_tests.py
-```
-
-### Running Deployment Script
-Assuming you have your AWS CLI correctly configured, you can take advantage of a handy script provided in the root package directory to easily test, build, and deploy your Lambda Function. Simply run the command:
-
-```
-python3 deploy_lambda_function.py
 ```
 
 ### Generate .zip file
