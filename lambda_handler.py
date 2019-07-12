@@ -31,7 +31,10 @@ def publish_message_to_sns(task_title):
 	
 def is_time_overdue(time_string):
 	due_time = dt.datetime.strptime(time_string, '%Y-%m-%d')
-	overdue_time = dt.datetime.now() - dt.timedelta(days=1)
+	# This is always at UTC, so if the Cloudwatch Event triggers after 8 PM EST, this is ok.
+	# If not, uncomment the subtraction.
+	# TODO: Get the current timezone as well.
+	overdue_time = dt.datetime.now() # - dt.timedelta(days=1)
 	print("\t\tProcessing due time: " + str(due_time), ". Will consider overdue if after: " + str(overdue_time))
 	if overdue_time >= due_time:
 		return True
