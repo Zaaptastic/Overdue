@@ -2,6 +2,7 @@ import boto3
 import os
 import pickle
 import datetime as dt
+from pytz import timezone
 from io import BytesIO
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
@@ -10,6 +11,7 @@ from google.auth.transport.requests import Request
 
 sns = boto3.client('sns')
 s3 = boto3.resource('s3')
+default_timezone = timezone('US/Eastern')
 
 # Grab credentials from S3 drop point and construct service client
 creds = None
@@ -31,11 +33,12 @@ def publish_message_to_sns(task_title):
 	return response
 	
 def is_time_overdue(time_string):
-	due_time = dt.datetime.strptime(time_string, '%Y-%m-%d')
-	# This is always at UTC, so if the Cloudwatch Event triggers after 8 PM EST, this is ok,
-	# since it essentially "adds a day". If not, adjust accordingly.
-	# TODO: Get the current timezone as well.
-	overdue_time = dt.datetime.now() # + dt.timedelta(days=1)
+	# We run into a limitation with the Tasks API not providing information more precise than day.
+	# Therefore, these alerts could be inaccurate if this function is called on the day of the
+	# task is due, but before the time at which it is due (False Positive).
+	due_time = default_timezone.localize(dt.datetime.strptime(time_string, '%Y-%m-%d'))
+	overdue_time = dt.datetime.now(default_timezone)
+
 	print("\t\tProcessing due time: " + str(due_time), ". Will consider overdue if after: " + str(overdue_time))
 	if overdue_time >= due_time:
 		return True
