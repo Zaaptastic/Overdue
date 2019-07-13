@@ -9,7 +9,7 @@ if 0 is not test_output:
 	quit()
 print("Tests passed! Bundling function code into ZIP archive")
 
-zip_output = os.system("cd package && zip -r9 ../overdue.zip . && cd ../ && zip -g overdue.zip lambda_handler.py")
+zip_output = os.system("cd package && zip -r9 ../overdue.zip . && cd ../ && zip -g overdue.zip *lambda_handler.py")
 if 0 is not zip_output:
 	quit()
 print("Created deployable ZIP archive, beginning Lambda Deployment")

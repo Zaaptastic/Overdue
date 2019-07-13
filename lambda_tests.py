@@ -6,7 +6,7 @@ os.environ['SNS_ARN'] = "test_sns_arn"
 os.environ['TEST_DOMAIN'] = "True"
 
 import datetime as dt
-import lambda_handler as class_under_test
+import overdue_tasks_lambda_handler as class_under_test
 
 not_overdue_time = str(dt.datetime.now() + dt.timedelta(days=1)).split(' ')[0]
 overdue_time = str(dt.datetime.now() - dt.timedelta(days=1)).split(' ')[0]
