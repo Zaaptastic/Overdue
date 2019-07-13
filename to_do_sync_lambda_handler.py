@@ -46,5 +46,5 @@ def handle_to_do_sync(event, context):
         results = tasks_service_client.tasks().insert(tasklist=tasklist_id, body={"title": item_to_add}).execute()
         print(results)
 
-        message = build_PlainSpeech("I've added " + item_to_add + " to your To-Do List")
+        message = build_PlainSpeech("Ok, done. I've added " + item_to_add + " to your To-Do List")
         return build_response(message)

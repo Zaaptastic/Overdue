@@ -46,5 +46,5 @@ def handle_shopping_sync(event, context):
         results = tasks_service_client.tasks().insert(tasklist=tasklist_id, body={"title": item_to_add}).execute()
         print(results)
 
-        message = build_PlainSpeech("I've added " + item_to_add + " to your Shopping List")
+        message = build_PlainSpeech("Good job, you did it! I've added " + item_to_add + " to your Shopping List")
         return build_response(message)
