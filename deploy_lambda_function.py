@@ -17,7 +17,12 @@ print("Created deployable ZIP archive, beginning Lambda Deployment")
 upload_output = os.system("aws lambda update-function-code --function-name Overdue --zip-file fileb://overdue.zip")
 if 0 is not upload_output:
 	quit()
-print("Successfully deployed Lambda Function! Lambda UI may not immediately update.")
+print("Successfully deployed Overdue Lambda Function! Lambda UI may not immediately update.")
+
+upload_output = os.system("aws lambda update-function-code --function-name ToDoSync --zip-file fileb://overdue.zip")
+if 0 is not upload_output:
+	quit()
+print("Successfully deployed ToDoSync Lambda Function! Lambda UI may not immediately update.")
 
 clean_up_output = os.system("rm overdue.zip")
 if 0 is not clean_up_output:
