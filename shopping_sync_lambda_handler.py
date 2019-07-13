@@ -35,10 +35,10 @@ def build_PlainSpeech(body):
     speech['text'] = body
     return speech
 
-def handle_to_do_sync(event, context):
+def handle_shopping_sync(event, context):
     print(event['request']['type'])
     if event['request']['type'] == "LaunchRequest":
-        message = build_PlainSpeech("Welcome to To Do Sync skill")
+        message = build_PlainSpeech("Welcome to Shopping Sync skill")
         return build_response(message)
     if event['request']['type'] == "IntentRequest":
         item_to_add = event['request']['intent']['slots']['item_to_add']['value']
@@ -46,5 +46,5 @@ def handle_to_do_sync(event, context):
         results = tasks_service_client.tasks().insert(tasklist=tasklist_id, body={"title": item_to_add}).execute()
         print(results)
 
-        message = build_PlainSpeech("I've added " + item_to_add + " to your To-Do List")
+        message = build_PlainSpeech("I've added " + item_to_add + " to your Shopping List")
         return build_response(message)

@@ -24,6 +24,11 @@ if 0 is not upload_output:
 	quit()
 print("Successfully deployed ToDoSync Lambda Function! Lambda UI may not immediately update.")
 
+upload_output = os.system("aws lambda update-function-code --function-name ShoppingSync --zip-file fileb://overdue.zip")
+if 0 is not upload_output:
+	quit()
+print("Successfully deployed ShoppingSync Lambda Function! Lambda UI may not immediately update.")
+
 clean_up_output = os.system("rm overdue.zip")
 if 0 is not clean_up_output:
 	print("Error deleting artifacts! Please manually remove ZIP archive.")
